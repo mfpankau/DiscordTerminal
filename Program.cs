@@ -86,17 +86,34 @@ namespace BGAppTesting
                         }
                         discord.SendMessageAsync(e.Message.Channel, "**Current Directory Set to: **" + curDir);
                     }
-                    //curDir command
-                    if (e.Message.Content.StartsWith("curDir"))
+                    //pwd command
+                    if (e.Message.Content.StartsWith("pwd"))
                     {
                         discord.SendMessageAsync(e.Message.Channel, "**Current Directory is: **" + curDir);
                     }
                     //cat command
                     if (e.Message.Content.StartsWith("cat"))
                     {
-                        data = File.ReadAllText(curDir + '\\' + e.Message.Content.Replace("cat ", ""));
-                        discord.SendMessageAsync(e.Message.Channel, data);
-                        data = "";
+                        if(args.length < 1)
+                        {
+                            discord.SendMessageAsync(e.Message.Channel, 
+                                "**Incorrect Usage!**\n" +
+                                "**Please input the command in the form:**\n" +
+                                "cat <mode(!t, !b)> <path to file>");
+                        }
+                        else
+                        {
+                            if(args[0] == 't')
+                            {
+                                data = File.ReadAllText(curDir + '\\' + e.Message.Content.Replace("cat !t ", ""));
+                            }
+                            else if(args[0] == 'b')
+                            {
+                                //read as bytes
+                            }
+                            discord.SendMessageAsync(e.Message.Channel, data);
+                            data = "";
+                        }
                     }
                     //bcat command       cat but for bytes
                     if (e.Message.Content.StartsWith("bcat"))
@@ -113,16 +130,6 @@ namespace BGAppTesting
                         discord.SendMessageAsync(e.Message.Channel, "**Length of file in bytes: **" + bytes.Length.ToString() + '\n' + "**First 500 bytes of data: **" + data);
                         data = "";
                     }
-                    //testing, REMOVE
-                    if (e.Message.Content.StartsWith("test"))
-                    {
-                        for (int i = 0; i < args.Length; i++)
-                        {
-                            data += args[i] + "\n";
-                        }
-                        discord.SendMessageAsync(e.Message.Channel, data);
-                        data = "";
-                    }
                     //touch command
                     if (e.Message.Content.StartsWith("touch"))
                     {
@@ -132,8 +139,7 @@ namespace BGAppTesting
                             discord.SendMessageAsync(e.Message.Channel,
                                 "**Incorrect Usage!**\n" +
                                 "**Please input the command in the form:**\n" +
-                                "touch !<write as(!t, !b)> !<access parameter(!w, !a)> <name of new file>\n" +
-                                "Please note: NEW FILE CAN ONLY BE CREATED IN CURRENT WORKING DIRECTORY");
+                                "touch <write mode(!t, !b)> <access parameter(!w, !a)> <name of new file>");
                         }
                         else
                         {
