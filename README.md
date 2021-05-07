@@ -7,7 +7,7 @@ This project aims to create a system of remote control for your pc, using comman
 Copy the code, paste in a discord bot token, compile and run.
 You can now run commands in any server the bot has access to
 
-#Commands
+# Commands
 Currently supported commands:
   cd - used to switch current directory
     Usage: cd <folder in current directory>
@@ -24,7 +24,7 @@ Currently supported commands:
     Usage: touch !b <name of new file> //writes as bytes WIP, currently not implemented
     //after running one of these commands, the next message you send will be written to the newly created file
    
-#Upcoming
+# Upcoming
   Fixed byte reading/writing
   Retrieving files
   Improvements to current commands
