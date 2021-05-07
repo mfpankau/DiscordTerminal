@@ -106,29 +106,17 @@ namespace BGAppTesting
                             if(args[0] == 't')
                             {
                                 data = File.ReadAllText(curDir + '\\' + e.Message.Content.Replace("cat !t ", ""));
+                                discord.SendMessageAsync(e.Message.Channel, data);
                             }
                             else if(args[0] == 'b')
                             {
                                 //read as bytes
+                                data = ReadBytes(e.Message.Content);
+                                discord.SendMessageAsync(e.Message.Channel, "**Length of file in bytes: **" + bytes.Length.ToString() + '\n' + "**First 500 bytes of data: **" + data);
                             }
-                            discord.SendMessageAsync(e.Message.Channel, data);
+                            
                             data = "";
                         }
-                    }
-                    //bcat command       cat but for bytes
-                    if (e.Message.Content.StartsWith("bcat"))
-                    {
-                        byte[] bytes = File.ReadAllBytes(curDir + '\\' + e.Message.Content.Replace("bcat ", ""));
-                        for (int i = 0; i < 500; i++)
-                        {
-                            if (i >= bytes.Length)
-                            {
-                                break;
-                            }
-                            data += bytes[i].ToString();
-                        }
-                        discord.SendMessageAsync(e.Message.Channel, "**Length of file in bytes: **" + bytes.Length.ToString() + '\n' + "**First 500 bytes of data: **" + data);
-                        data = "";
                     }
                     //touch command
                     if (e.Message.Content.StartsWith("touch"))
@@ -188,6 +176,20 @@ namespace BGAppTesting
                 }
             }
             return args;
+        }
+        static string ReadBytes(string input)
+        {
+            string data = "";
+            byte[] bytes = File.ReadAllBytes(curDir + '\\' + input.Replace("cat !b ", ""));
+            for (int i = 0; i < 500; i++)
+            {
+                if (i >= bytes.Length)
+                {
+                    break;
+                }
+                data += bytes[i].ToString();
+            }
+            return data;
         }
     }
 }
